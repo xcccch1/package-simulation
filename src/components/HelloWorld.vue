@@ -1,9 +1,5 @@
 <template>
-  <div>
-    <div style="width: 500px; height: 500px; margin: 0 auto" id="threejs"></div>
-    <input type="text" v-model="num" />
-    <button type="submit" @click="create_mesh">提交</button>
-  </div>
+    <div style="width: 500px; height: 500px;" id="threejs"></div>
 </template>
 
 <script>
@@ -36,7 +32,7 @@ export default {
     create_mesh() {
       for (let index = 0; index < 10; index++) {
         const mesh1 = app.create_mesh(1, 1, 1);
-        mesh1.position.set(index,0,0)
+        mesh1.position.set(index, 0, 0);
         app.scene.add(mesh1);
       }
     },
@@ -56,5 +52,9 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden; /* 防止出现滚动条 */
+}
+
+.box{
+  display: flex;
 }
 </style>
