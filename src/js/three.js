@@ -92,13 +92,21 @@ export default class ThreeJs {
     }
 
 
-    create_mesh(x, y, z) {
-        const geometry = new THREE.BoxGeometry(x, y, z);
-        const material = new THREE.MeshBasicMaterial({
+    create_mesh(x, y, z,shape) {
+        const geometry = this.select_shape(x,y,z,shape)
+        const materia = new THREE.MeshBasicMaterial({
             color: this.randomHexColor(), //0xff0000设置材质颜色为红色
         });
-        const mesh = new THREE.Mesh(geometry, material);
+        const mesh = new THREE.Mesh(geometry, materia);
         return mesh
+    }
+
+    select_shape(x,y,z,shape){
+        if(shape == 'BoxGeometry'){
+            return new THREE.BoxGeometry(x, y, z);
+        }else if(shape == 'SphereGeometry'){
+            return new THREE.SphereGeometry(x, y, z);
+        }
     }
 
 

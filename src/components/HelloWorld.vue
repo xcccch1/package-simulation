@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 500px; height: 500px;" id="threejs"></div>
+    <div style="width: 100%;height: 100%;" id="threejs"></div>
 </template>
 
 <script>
@@ -8,13 +8,14 @@ let app, scene, camera, renderer;
 
 export default {
   name: "HelloWorld",
+  props:['box_data'],
   data() {
-    return {
-      num: 0,
-    };
+    return {};
   },
-  created() {
+  created() {},
+  mounted() {
     this.init();
+    this.create_mesh()
   },
   methods: {
     async init() {
@@ -31,15 +32,12 @@ export default {
     },
     create_mesh() {
       for (let index = 0; index < 10; index++) {
-        const mesh1 = app.create_mesh(1, 1, 1);
-        mesh1.position.set(index, 0, 0);
-        app.scene.add(mesh1);
+        const mesh = app.create_mesh(this.box_data.x,this.box_data.y,this.box_data.z,this.box_data.shape);
+        mesh.position.set(index, 0, 0);
+        app.scene.add(mesh);
       }
-    },
-  },
-  mounted() {
-    this.init();
-  },
+    }
+  }
 };
 </script>
 
@@ -52,9 +50,5 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden; /* 防止出现滚动条 */
-}
-
-.box{
-  display: flex;
 }
 </style>

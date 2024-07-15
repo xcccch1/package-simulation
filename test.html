@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Three.js Packing Simulation</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    let scene, camera, renderer;
+
+    function init() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 50;
+
+      renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+      
+      controls = new THREE.OrbitControls(camera, renderer.domElement);  
+      const containerWidth = 30;
+      const containerHeight = 30;
+      const containerDepth = 30;
+
+      const containerGeometry = new THREE.BoxGeometry(containerWidth, containerHeight, containerDepth);
+      const containerMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: true });
+      const container = new THREE.Mesh(containerGeometry, containerMaterial);
+      scene.add(container);
+
+      function createCargo(width, height, depth, color) {
+        const cargoGeometry = new THREE.BoxGeometry(width, height, depth);
+        const cargoMaterial = new THREE.MeshBasicMaterial({ color: color });
+        const cargo = new THREE.Mesh(cargoGeometry, cargoMaterial);
+        return cargo;
+      }
+
+      const cargos = [
+        createCargo(5, 5, 5, 0xff0000),
+        createCargo(5, 10, 5, 0x00ff00),
+        createCargo(5, 5, 10, 0x0000ff)
+      ];
+
+      function packCargos(container, cargos) {
+        const containerVolume = containerWidth * containerHeight * containerDepth;
+        let currentVolume = 0;
+        let position = { x: -containerWidth / 2, y: -containerHeight / 2, z: -containerDepth / 2 };
+
+        cargos.forEach(cargo => {
+          const cargoVolume = cargo.geometry.parameters.width * cargo.geometry.parameters.height * cargo.geometry.parameters.depth;
+          if (currentVolume + cargoVolume <= containerVolume) {
+            cargo.position.set(position.x + cargo.geometry.parameters.width / 2,
+                               position.y + cargo.geometry.parameters.height / 2,
+                               position.z + cargo.geometry.parameters.depth / 2);
+            position.x += cargo.geometry.parameters.width;
+            currentVolume += cargoVolume;
+            scene.add(cargo);
+          } else {
+            console.log('No more space for this cargo');
+          }
+        });
+      }
+
+      packCargos(container, cargos);
+
+      animate();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    init();
+  </script>
+</body>
+</html>
