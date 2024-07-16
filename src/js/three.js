@@ -50,6 +50,17 @@ export default class ThreeJs {
                 this.cssRenderer.setSize(this.dom.offsetWidth, this.dom.offsetHeight);
             }
         })
+
+        // 光源
+        this.AmbientLight = new THREE.AmbientLight(0xffffff)
+        this.scene.add(this.AmbientLight)
+        // 点光
+        // this.light = new THREE.PointLight(0x000011, 30, 1000)
+        // this.light.position.set(500, 400, 500) //default; light shining from top
+        // this.scene.add(this.light)
+        // 平行光
+        // this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.2)
+        // this.scene.add(this.directionalLight)
     }
 
     initHelper(helperSize = 1000) {
@@ -90,25 +101,6 @@ export default class ThreeJs {
         //设置控制器最小旋转角度
         this.controller.minAzimuthAngle = minAzimuthAngle;
     }
-
-
-    create_mesh(x, y, z,shape) {
-        const geometry = this.select_shape(x,y,z,shape)
-        const materia = new THREE.MeshBasicMaterial({
-            color: this.randomHexColor(), //0xff0000设置材质颜色为红色
-        });
-        const mesh = new THREE.Mesh(geometry, materia);
-        return mesh
-    }
-
-    select_shape(x,y,z,shape){
-        if(shape == 'BoxGeometry'){
-            return new THREE.BoxGeometry(x, y, z);
-        }else if(shape == 'SphereGeometry'){
-            return new THREE.SphereGeometry(x, y, z);
-        }
-    }
-
 
     randomHexColor() { //随机生成十六进制颜色
         var hex = Math.floor(Math.random() * 16777216).toString(16); //生成ffffff以内16进制数

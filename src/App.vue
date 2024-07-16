@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <el-container>
+    <HelloWorld></HelloWorld>
+    <!-- <el-container>
       <el-main>
-        <HelloWorld :box_data="box_data" />
+        <HelloWorld :box_data="box_data"/>
       </el-main>
-      <el-aside style="width: 20%;">
+      <el-aside style="width:20%;">
         <el-form :model="box_data">
           <el-form-item label="长">
             <el-input v-model="box_data.x"></el-input>
@@ -22,11 +23,11 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button type="primary">提交</el-button>
           </el-form-item>
         </el-form>
       </el-aside>
-    </el-container>
+    </el-container> -->
   </div>
 </template>
 
@@ -38,28 +39,18 @@ export default {
   name: 'App',
   data() {
     return {
-      box_data: {
-          x: '',
-          y:'',
-          z:'',
-          shape: ''
-        }
     }
   },
   components: {
     HelloWorld
   },
-  methods: {
-    onSubmit() {
-        this.$emit('submit_data',this.box_data)
-      }
-  },
+  methods: {},
+  mounted(){}
 }
 </script>
 
 <style scoped>
 #app {
-  display: flex;
   width: 100vw;
   height: 100vh;
 }
