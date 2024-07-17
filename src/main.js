@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import "@/css/reset.css"
-import {Container,Main,Aside,Form,FormItem,Select,Option,Button,Input} from 'element-ui'
+import {Container,Main,Aside,Form,FormItem,Select,Option,Button,Input,Message} from 'element-ui'
 
 Vue.config.productionTip = false
 Vue.use(Container)
@@ -13,6 +13,7 @@ Vue.use(Option)
 Vue.use(Select)
 Vue.use(Button)
 Vue.use(Input)
+Vue.prototype.$message = Message
 
 
 
