@@ -11,6 +11,7 @@ export default class ThreeJs {
     initThree() {
         //这个初始化的是场景
         this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color('#000000')
         this.width = this.dom.offsetWidth;
         this.height = this.dom.offsetHeight;
         this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);

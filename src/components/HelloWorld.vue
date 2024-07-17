@@ -15,10 +15,10 @@
         <el-input v-model="box_data.xz.l"></el-input>
       </el-form-item>
       <el-form-item label="宽">
-        <el-input v-model="box_data.xz.h"></el-input>
+        <el-input v-model="box_data.xz.w"></el-input>
       </el-form-item>
       <el-form-item label="高">
-        <el-input v-model="box_data.xz.w"></el-input>
+        <el-input v-model="box_data.xz.h"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitdata(box_data)">提交</el-button>
@@ -49,7 +49,8 @@ export default {
           w: 0,
           h: 0
         }
-      }
+      },
+      num:70
     };
   },
   created() { },
@@ -106,18 +107,11 @@ export default {
     submitdata(box_data) {
       this.rm_mesh()
       const { jzx, xz } = box_data
-      // jzx.l = Math.floor(jzx.l * 100) / 100
-      // jzx.w = Math.floor(jzx.w * 100) / 100
-      // jzx.h = Math.floor(jzx.h * 100) / 100
-      // xz.l = Math.floor(xz.l * 100) / 100
-      // xz.w = Math.floor(xz.w * 100) / 100
-      // xz.h = Math.floor(xz.h * 100) / 100
 
       // 创建外部箱体
       this.create_jzx(jzx.l, jzx.w, jzx.h)
       // 创建内部箱体
       if (xz.l > jzx.l || xz.w > jzx.w || xz.h > jzx.h) {
-        // this.$message.error('尺寸错误，无法装入。');
         this.$message.error("尺寸错误，无法装入！")
         this.box_data = { jzx: { l: 0, w: 0, h: 0 }, xz: { l: 0, w: 0, h: 0 } }
         return
@@ -125,29 +119,36 @@ export default {
         let group = new THREE.Group();
         // 内部箱子初始初始位置
         let position = { x: xz.l / 2, y: xz.h / 2, z: xz.w / 2 }
-        console.log(position);
-        // 横向数量，x = l
+        // x向数量，x = l
         const xz_x = parseInt(jzx.l / xz.l)
-        // 向数量，z = w
+        // z向数量，z = w
         const xz_z = parseInt(jzx.w / xz.w)
-        // 竖向数量，y = h
+        // y向数量，y = h
         const xz_y = parseInt(jzx.h / xz.h)
-        console.log(xz_x,xz_z,xz_y);
-        for (let index_z = 0; index_z < xz_z; index_z++) {
-          for (let index_x = 0; index_x < xz_x; index_x++) {
-            const mesh = this.create_goods(xz.l, xz.w, xz.h)
-            mesh.position.set(position.x, position.y, position.z)
-            group.add(mesh)
-            position.x += xz.l * 1
-            if (index_x == xz_x - 1) {
-              position.z += xz.w * 1
+        let mesh_num = 0
+        for (let index_y = 0; index_y < xz_y; index_y++) {
+          for (let index_z = 0; index_z < xz_z; index_z++) {
+            for (let index_x = 0; index_x < xz_x; index_x++) {
+              const mesh = this.create_goods(xz.l, xz.h, xz.w)
+              mesh.position.set(position.x, position.y, position.z)
+              console.log(position);
+              group.add(mesh)
+              position.x += xz.l * 1
+              if (index_x == xz_x - 1) {
+                position.z += xz.w * 1
+                position.x = xz.l / 2
+              }
+              mesh_num++
+              if (this.num == mesh_num) break;
+            }
+            if (index_z == xz_z - 1) {
+              position.y += xz.h *1
+              position.z = xz.w / 2
               position.x = xz.l / 2
             }
-            console.log(position);
           }
         }
         app.scene.add(group)
-        console.log(app.scene);
       }
     },
     // 更新前清除mesh
