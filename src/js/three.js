@@ -11,7 +11,7 @@ export default class ThreeJs {
     initThree() {
         //这个初始化的是场景
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color('#000000')
+        // this.scene.background = new THREE.Color('#000000')
         this.width = this.dom.offsetWidth;
         this.height = this.dom.offsetHeight;
         this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 1, 1000);
@@ -56,12 +56,12 @@ export default class ThreeJs {
         this.AmbientLight = new THREE.AmbientLight(0xffffff)
         this.scene.add(this.AmbientLight)
         // 点光
-        // this.light = new THREE.PointLight(0x000011, 30, 1000)
-        // this.light.position.set(500, 400, 500) //default; light shining from top
-        // this.scene.add(this.light)
+        this.light = new THREE.PointLight(0x000011, 30, 1000)
+        this.light.position.set(500, 400, 500) //default; light shining from top
+        this.scene.add(this.light)
         // 平行光
-        // this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.2)
-        // this.scene.add(this.directionalLight)
+        this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.2)
+        this.scene.add(this.directionalLight)
     }
 
     initHelper(helperSize = 1000) {
